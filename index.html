@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radar Laberinto - Control Panel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="interfaz-contenedor">
+        
+        <div class="columna-izquierda">
+            <div class="tarjeta radar-box">
+                <h2>📡 Radar de Navegación (9 Puntos)</h2>
+                <div class="radar-pantalla" id="radarPantalla">
+                    </div>
+            </div>
+
+            <div class="fila-inferior">
+                <div class="tarjeta angulo-box">
+                    <h3>📐 Ángulo Servo</h3>
+                    <div id="anguloTexto" class="valor-grande">90°</div>
+                </div>
+
+                <div class="tarjeta modos-box">
+                    <h3>⚙️ Modo del Servo</h3>
+                    <div class="botones-modos">
+                        <button id="btnAutomatico" class="btn activo" onclick="cambiarModoServo('automatico')">AUTOMÁTICO</button>
+                        <button id="btnMecanico" class="btn" onclick="cambiarModoServo('mecanico')">MECÁNICO</button>
+                    </div>
+                </div>
+
+                <div class="tarjeta control-manual-box disabled" id="controlManualBox">
+                    <h3>🔧 Control Mecánico</h3>
+                    <p>Ingresa ángulo (20, 37.5, 55, 72.5, 90, 107.5, 125, 142.5, 160):</p>
+                    <div class="input-grupo">
+                        <input type="number" id="inputAngulo" step="0.5" min="20" max="160" placeholder="Ej. 90" disabled>
+                        <button id="btnEnviarAngulo" onclick="enviarAnguloManual()" disabled>Enviar</button>
+                    </div>
+                    <div id="errorAngulo" class="error-msg"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="columna-central">
+            <div class="tarjeta control-velocidad-box">
+                <h3>⚡ Control Velocidad</h3>
+                <input type="range" id="sliderVelocidad" min="0" max="255" value="150" orient="vertical" oninput="actualizarSliderVelocidad(this.value)">
+                <div id="velFeedback" class="vel-num">150</div>
+            </div>
+        </div>
+
+        <div class="columna-derecha">
+            <div class="tarjeta feedback-motores-box">
+                <h3>⚙️ Estado Motores</h3>
+                <p>Velocidad Actual:</p>
+                <div id="velocidadEstadoTexto" class="valor-grande">0</div>
+                <div class="barra-progreso-bg">
+                    <div id="barraProgresoVel" class="barra-progreso-llenado"></div>
+                </div>
+                <p>Movimiento:</p>
+                <div id="movimientoTexto" class="valor-medio">DETENIDO</div>
+            </div>
+
+            <div class="tarjeta direccion-box">
+                <h3>🕹️ Controles de Motores</h3>
+                <button class="btn btn-avanzar" onclick="enviarComandoMotor('avanzar')">ADELANTE</button>
+                <div class="fila-giros">
+                    <button class="btn btn-giro" onclick="enviarComandoMotor('izquierda')">IZQUIERDA</button>
+                    <button class="btn btn-parar" onclick="enviarComandoMotor('parar')">PARAR</button>
+                    <button class="btn btn-giro" onclick="enviarComandoMotor('derecha')">DERECHA</button>
+                </div>
+                <button class="btn btn-retroceder" onclick="enviarComandoMotor('retroceder')">ATRÁS</button>
+            </div>
+
+            <div class="tarjeta websocket-box">
+                <h3>🌐 Conexión ESP32</h3>
+                <label for="inputIP" class="ip-label">IP del ESP32:</label>
+                <div class="input-grupo input-ip-grupo">
+                    <input type="text" id="inputIP" placeholder="Ej. 192.168.1.45" autocomplete="off">
+                    <button id="btnConectar" class="btn-conectar" onclick="conectarConIP()">CONECTAR</button>
+                </div>
+                <div id="errorIP" class="error-msg"></div>
+                <div class="estado-ws">Estado: <span id="estadoWS">Desconectado</span></div>
+                <button class="btn btn-desconectar" onclick="cerrarConexion()">DESCONECTARSE</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="funcionamientos.js"></script>
+</body>
+</html>
